@@ -1,0 +1,1 @@
+rootProject.name = "botdiril-schema-autocompile-plugin"
