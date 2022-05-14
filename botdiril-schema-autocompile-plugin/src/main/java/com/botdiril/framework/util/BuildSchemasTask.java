@@ -15,10 +15,7 @@ import java.net.URLClassLoader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -43,15 +40,6 @@ public class BuildSchemasTask extends DefaultTask
 
         });
 
-        try
-        {
-            Files.createDirectories(this.outputDir);
-        }
-        catch (IOException e)
-        {
-            throw new UncheckedIOException(e);
-        }
-
         this.sourceSets = new HashSet<>();
     }
 
@@ -75,6 +63,25 @@ public class BuildSchemasTask extends DefaultTask
     @TaskAction
     public void buildSqlSchemas()
     {
+        try
+        {
+            if (Files.isDirectory(this.outputDir))
+            {
+                try (var files = Files.walk(this.outputDir))
+                {
+                    files.sorted(Comparator.reverseOrder())
+                         .forEach(Failable.asConsumer(Files::delete));
+                }
+            }
+
+            Files.createDirectories(this.outputDir);
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
+
+
         if (this.sourceSets.isEmpty())
             return;
 
