@@ -16,7 +16,7 @@ gradlePlugin {
 
 tasks.withType<Wrapper> {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = "7.3"
+    gradleVersion = "7.4.2"
 }
 
 
