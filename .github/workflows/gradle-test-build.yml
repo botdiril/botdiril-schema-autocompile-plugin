@@ -32,5 +32,6 @@ jobs:
 
       - name: Build
         run: |
+          cd botdiril-schema-autocompile-plugin
           chmod +x ./gradlew
           ./gradlew build --stacktrace --info
